@@ -1,0 +1,36 @@
+[gd_scene load_steps=5 format=3 uid="uid://busmdd2abusab"]
+
+[ext_resource type="Script" path="res://scene/entity/ennemy/rush_boys.gd" id="1_vxbok"]
+[ext_resource type="PackedScene" uid="uid://b4530u4x8obbs" path="res://scene/entity/Components/velocity_and_direction.tscn" id="2_saggc"]
+[ext_resource type="PackedScene" uid="uid://cyf1o7jdqeggd" path="res://scene/entity/Components/health_component.tscn" id="3_fa77i"]
+[ext_resource type="PackedScene" uid="uid://dqseegllsngkg" path="res://scene/entity/Components/hitbox_component.tscn" id="4_5xe2h"]
+
+[node name="RushBoys" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 3
+motion_mode = 1
+wall_min_slide_angle = 0.0
+script = ExtResource("1_vxbok")
+
+[node name="VelocityAndDirection" parent="." instance=ExtResource("2_saggc")]
+speed = 200.0
+
+[node name="HealthComponent" parent="." instance=ExtResource("3_fa77i")]
+MAX_HEALTH = 20
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+color = Color(0, 0.540053, 0.0534381, 1)
+polygon = PackedVector2Array(-13, 0, 15, 0, 0, -27)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(0, -27, -13, 0, 15, 0)
+
+[node name="HitboxComponent" parent="." node_paths=PackedStringArray("health_componant") instance=ExtResource("4_5xe2h")]
+collision_layer = 32
+collision_mask = 64
+health_componant = NodePath("../HealthComponent")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="HitboxComponent"]
+polygon = PackedVector2Array(0, -27, 15, 0, -13, 0)
+
+[connection signal="death" from="HealthComponent" to="." method="_on_health_component_death"]

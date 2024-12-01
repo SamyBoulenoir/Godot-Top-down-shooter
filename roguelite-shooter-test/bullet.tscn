@@ -1,0 +1,34 @@
+[gd_scene load_steps=4 format=3 uid="uid://85bxsvnjobuq"]
+
+[ext_resource type="Script" path="res://bullet.gd" id="1_3wqit"]
+[ext_resource type="PackedScene" uid="uid://dqseegllsngkg" path="res://scene/entity/Components/hitbox_component.tscn" id="1_dq03b"]
+[ext_resource type="PackedScene" uid="uid://b4530u4x8obbs" path="res://scene/entity/Components/velocity_and_direction.tscn" id="3_24e4o"]
+
+[node name="Bullet" type="CharacterBody2D"]
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("1_3wqit")
+
+[node name="VelocityAndDirection" parent="." instance=ExtResource("3_24e4o")]
+speed = 300.0
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(-1, 0, -1, -1, 1, -1, 1, 1, -1, 1)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(-1, -1, 1, -1, 1, 1, -1, 1)
+
+[node name="HitboxComponent" parent="." instance=ExtResource("1_dq03b")]
+collision_layer = 0
+collision_mask = 0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="HitboxComponent"]
+polygon = PackedVector2Array(-1, -1, 1, -1, 1, 1, -1, 1)
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+autostart = true
+
+[connection signal="area_entered" from="HitboxComponent" to="." method="_on_hitbox_component_area_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

@@ -1,0 +1,51 @@
+[gd_scene load_steps=7 format=3 uid="uid://bvx4ncig1gd2s"]
+
+[ext_resource type="Script" path="res://scene/entity/Hero/hero.gd" id="1_2s00i"]
+[ext_resource type="PackedScene" uid="uid://b4530u4x8obbs" path="res://scene/entity/Components/velocity_and_direction.tscn" id="1_3eli5"]
+[ext_resource type="PackedScene" uid="uid://cnhyknh6tgaiq" path="res://scene/entity/Components/player_controller.tscn" id="3_lkdha"]
+[ext_resource type="PackedScene" uid="uid://cyf1o7jdqeggd" path="res://scene/entity/Components/health_component.tscn" id="4_e0o4n"]
+[ext_resource type="PackedScene" uid="uid://dqseegllsngkg" path="res://scene/entity/Components/hitbox_component.tscn" id="5_qxfhb"]
+[ext_resource type="PackedScene" uid="uid://b3utut6fbe16w" path="res://scene/entity/weapon/gun.tscn" id="6_8ybf1"]
+
+[node name="Hero" type="CharacterBody2D"]
+collision_mask = 4
+script = ExtResource("1_2s00i")
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+position = Vector2(0, -2.84217e-14)
+scale = Vector2(2.33333, 1.8)
+color = Color(0.157619, 0.189187, 0.26546, 1)
+polygon = PackedVector2Array(-6.00001, 1.57898e-14, -6.00001, 6.66667, 0, 5, 6.00001, 1.57898e-14, 0, -5, -6.00001, -7.22222)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+limit_smoothed = true
+position_smoothing_enabled = true
+position_smoothing_speed = 15.0
+
+[node name="VelocityAndDirection" parent="." instance=ExtResource("1_3eli5")]
+speed = 100
+minimal_speed = 10
+
+[node name="PlayerController" parent="." instance=ExtResource("3_lkdha")]
+
+[node name="HealthComponent" parent="." instance=ExtResource("4_e0o4n")]
+
+[node name="Gun" parent="." instance=ExtResource("6_8ybf1")]
+
+[node name="HitboxComponent" parent="." node_paths=PackedStringArray("health_componant") instance=ExtResource("5_qxfhb")]
+collision_layer = 16
+collision_mask = 32
+health_componant = NodePath("../HealthComponent")
+
+[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="HitboxComponent"]
+position = Vector2(2.84217e-14, -1.42109e-14)
+scale = Vector2(2.29167, 1.75)
+polygon = PackedVector2Array(-2.08074e-07, -5.14286, -6.10908, -7.42857, -6.10908, 6.85714, -1.24022e-14, 5.14286, 6.10909, 1.36239e-07)
+
+[node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="."]
+position = Vector2(2.84217e-14, -1.42109e-14)
+scale = Vector2(2.29167, 1.75)
+polygon = PackedVector2Array(-2.08074e-07, -5.14286, -6.10908, -7.42857, -6.10908, 6.85714, -1.24022e-14, 5.14286, 6.10909, 1.36239e-07)
+
+[connection signal="shoot" from="PlayerController" to="." method="_on_player_controller_shoot"]
+[connection signal="death" from="HealthComponent" to="." method="_on_health_component_death"]

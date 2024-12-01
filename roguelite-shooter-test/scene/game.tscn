@@ -1,0 +1,35 @@
+[gd_scene load_steps=6 format=3 uid="uid://ceyk736hjyl1e"]
+
+[ext_resource type="Script" path="res://scene/game.gd" id="1_mwdcu"]
+[ext_resource type="PackedScene" uid="uid://bvx4ncig1gd2s" path="res://scene/entity/Hero/hero.tscn" id="1_wkrwi"]
+[ext_resource type="PackedScene" uid="uid://dv4cqqlm3lojx" path="res://scene/entity/Spwaner/spawner_line.tscn" id="4_o7ynf"]
+
+[sub_resource type="Sky" id="Sky_s2mr1"]
+
+[sub_resource type="Environment" id="Environment_kjm4a"]
+background_mode = 3
+background_color = Color(0.39185, 0.226314, 0.291123, 1)
+background_energy_multiplier = 0.0
+sky = SubResource("Sky_s2mr1")
+tonemap_mode = 3
+ssr_fade_in = 0.106066
+glow_enabled = true
+glow_mix = 0.0
+fog_light_color = Color(0.858207, 0, 0.388832, 1)
+
+[node name="Game" type="Node2D" groups=["Plateau de jeu"]]
+script = ExtResource("1_mwdcu")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_kjm4a")
+
+[node name="Hero" parent="." instance=ExtResource("1_wkrwi")]
+
+[node name="Camera2D" type="Camera2D" parent="Hero"]
+zoom = Vector2(2, 2)
+position_smoothing_enabled = true
+
+[node name="SpawnerLine" parent="Hero/Camera2D" instance=ExtResource("4_o7ynf")]
+position = Vector2(-238, -278)
+
+[connection signal="child_entered_tree" from="." to="." method="_on_child_entered_tree"]

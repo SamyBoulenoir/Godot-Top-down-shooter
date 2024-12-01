@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://b4530u4x8obbs"]
+
+[ext_resource type="Script" path="res://scene/entity/Components/velocity_and_direction.gd" id="1_dvhkg"]
+
+[node name="VelocityAndDirection" type="Node2D"]
+script = ExtResource("1_dvhkg")

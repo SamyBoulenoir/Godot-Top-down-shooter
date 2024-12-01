@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://dv4cqqlm3lojx"]
+
+[ext_resource type="Script" path="res://scene/entity/Spwaner/spawner_point.gd" id="1_rpe2e"]
+[ext_resource type="Script" path="res://spawner_point.gd" id="1_vrn8r"]
+
+[sub_resource type="Curve2D" id="Curve2D_sh3sm"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -528, -126, 0, 0, 0, 0, 1091.31, -129.715, 0, 0, 0, 0, 1094.12, 792.544, 0, 0, 0, 0, -524.56, 793.969, 0, 0, 0, 0, -527.372, -128.29)
+}
+point_count = 5
+
+[node name="SpawnerLine" type="Path2D"]
+curve = SubResource("Curve2D_sh3sm")
+
+[node name="SpawnerPoint" type="PathFollow2D" parent="."]
+position = Vector2(-528, -126)
+rotation = -0.00229414
+script = ExtResource("1_rpe2e")
+
+[node name="SpawnRandomMob" type="Node2D" parent="SpawnerPoint"]
+script = ExtResource("1_vrn8r")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+
+[connection signal="timeout" from="Timer" to="SpawnerPoint/SpawnRandomMob" method="_on_timer_timeout"]
